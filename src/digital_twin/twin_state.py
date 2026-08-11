@@ -7,7 +7,7 @@ Tracks active sensor telemetry, historical buffers, and model prediction output 
 
 from typing import List, Dict, Any, Optional
 from src.config.constants import HealthStatus
-from src.digital_twin.asset_registry import InfrastructureAssest, InfrastructureAsset
+from src.digital_twin.asset_registry import InfrastructureAsset, InfrastructureAsset
 
 class DigitalTwinState:
     """
@@ -29,7 +29,7 @@ class DigitalTwinState:
             "temperature_c":0.0,
             
         }
-        self.telementry_history: List[Dict[str, Any]] = []
+        self.telemetry_history: List[Dict[str, Any]] = []
 
         #2. Dowmnstream Modeling Ingestion Tracking Registers
         self.current_health: HealthStatus = HealthStatus.HEALTHY
@@ -69,7 +69,7 @@ class DigitalTwinState:
             "vitals": self.current_vitals,
             "health_status": self.current_health.value,
             "health_score": self.health_score,
-            "forecasted_risks": self.forecasted_risks
+            "forecasted_health": self.forecasted_health
         }
 
     
