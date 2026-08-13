@@ -8,25 +8,15 @@ from src.data.synthetic_generator import make_asset_data
 from src.diagnosis import get_asset_health
 from src.explainability.engine import evaluate_decision_trust
 from src.forecasting import get_risk_forecast
-from src.optimizer.optimizer import calculate_best_action
-
-
-# ---------------------------------------------------------
-# Page configuration
-# ---------------------------------------------------------
+from src.optimizer import calculate_best_action
 
 st.set_page_config(
     page_title="Pulse | Infrastructure Intelligence",
-    layout="wide",
+    layout="wide"
 )
 
 st.title("🏥 Pulse — Urban Infrastructure Decision Intelligence")
 st.markdown("---")
-
-
-# ---------------------------------------------------------
-# Asset selection
-# ---------------------------------------------------------
 
 st.sidebar.header("🕹️ Asset Selection")
 
@@ -42,46 +32,26 @@ selected_id = st.sidebar.selectbox(
     asset_options,
 )
 
-
-# Asset metadata
 if "Bridge" in selected_id:
     asset_type = AssetType.BRIDGE
     age = 42.0
     location = "Bhubaneswar"
-
 elif "Road" in selected_id:
     asset_type = AssetType.ROAD_SEGMENT
     age = 5.0
     location = "Cuttack"
-
 elif "Pipeline" in selected_id:
     asset_type = AssetType.PIPELINE
     age = 15.0
     location = "Puri"
-
 else:
     asset_type = AssetType.TRANSFORMER
     age = 28.0
     location = "Sambalpur"
 
-
-# ---------------------------------------------------------
-# Generate asset data
-# ---------------------------------------------------------
-
-df = make_asset_data(
-    selected_id,
-    asset_type,
-    age,
-    days=365,
-)
+df = make_asset_data(selected_id, asset_type, age, days=365)
 
 latest_row = df.iloc[-1].to_dict()
-
-
-# ---------------------------------------------------------
-# Asset information
-# ---------------------------------------------------------
 
 st.caption(
     f"Asset: {selected_id} | "
@@ -89,11 +59,6 @@ st.caption(
     f"Location: {location} | "
     f"Age: {age:.0f} years"
 )
-
-
-# ---------------------------------------------------------
-# Current sensor readings
-# ---------------------------------------------------------
 
 col1, col2, col3, col4 = st.columns(4)
 
@@ -124,17 +89,7 @@ with col4:
 
 st.markdown("---")
 
-
-# ---------------------------------------------------------
-# Diagnosis and decision support
-# ---------------------------------------------------------
-
 left_col, right_col = st.columns(2)
-
-
-# ---------------------------------------------------------
-# Diagnostic health
-# ---------------------------------------------------------
 
 with left_col:
     st.subheader("❤️ Diagnostic Health")
@@ -160,10 +115,6 @@ with left_col:
         f"Baseline System Health Score: "
         f"{health_score}/100"
     )
-
-    # -----------------------------------------------------
-    # Risk forecasting
-    # -----------------------------------------------------
 
     st.markdown("#### 📈 7/30/90-Day Risk Projection")
 
@@ -197,11 +148,6 @@ with left_col:
         use_container_width=True,
     )
 
-
-# ---------------------------------------------------------
-# Optimized treatment support
-# ---------------------------------------------------------
-
 with right_col:
     st.subheader("🛠️ Optimized Treatment Support")
 
@@ -222,10 +168,6 @@ with right_col:
         f"👉 **Recommended Action:** **{action_name}**\n\n"
         f"🎯 **System Confidence:** **{confidence}%**"
     )
-
-    # -----------------------------------------------------
-    # Feature contribution visualization
-    # -----------------------------------------------------
 
     st.markdown(
         "#### 🛡️ Decision Attribution Breakdown"
@@ -254,11 +196,6 @@ with right_col:
 
 st.markdown("---")
 
-
-# ---------------------------------------------------------
-# What-if scenario simulation
-# ---------------------------------------------------------
-
 st.subheader("🔄 What-If Stress-Test Scenario Simulation")
 
 st.markdown(
@@ -286,11 +223,9 @@ with sim_col2:
             "Normal",
             "Severe",
         ],
-        value="Normal",
+        index=0,
     )
 
-
-# Calculate scenario risk
 simulated_risk = get_scenario_risk(
     status_name,
     traffic_input,
